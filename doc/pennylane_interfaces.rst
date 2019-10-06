@@ -8,19 +8,19 @@ Machien Learning interfaces
 
 .. tabs::
 
-   .. code-tab:: c
+   .. code-tab:: NumPy
 
          int main(const int argc, const char **argv) {
            return 0;
          }
 
-   .. code-tab:: c++
+   .. code-tab:: PyTorch
 
          int main(const int argc, const char **argv) {
            return 0;
          }
 
-   .. code-tab:: py
+   .. code-tab:: TensorFlow
 
          def main():
              return
