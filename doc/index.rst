@@ -156,6 +156,7 @@ PennyLane is **free** and **open source**, released under the Apache License, Ve
    :hidden:
 
    tutorials
+   pennylane_interfaces
 
 
 .. toctree::
