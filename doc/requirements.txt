@@ -11,6 +11,7 @@ scipy
 sphinx==1.8.5
 sphinxcontrib-bibtex
 sphinx_gallery
+sphinx-tabs==1.1.13
 strawberryfields
 tensorflow==1.13.2
 toml
