@@ -192,6 +192,7 @@ class CVQNode(JacobianQNode):
                 y1 = np.asarray(self.evaluate(shift_p2, kwargs))
                 pd += (y2 - y1) * multiplier
             else:
+                # FIXME add more explanatory comments!
                 # order-2 parameter-shift method, for gaussian CV gates
                 # succeeded by order-2 observables
                 # evaluate transformed observables at the original parameter point
