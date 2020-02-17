@@ -106,7 +106,7 @@ from collections.abc import Sequence
 
 import numpy as np
 
-from .qnode import QNode
+import pennylane as qml
 from .utils import _flatten, _unflatten
 from .variable import Variable
 
@@ -217,7 +217,7 @@ class Operator(abc.ABC):
         do_queue (bool): Indicates whether the operator should be
             immediately pushed into a :class:`QNode` circuit queue.
             The circuit queue is determined by the presence of an
-            applicable `QNode._current_context`. If no context is
+            applicable `qml._current_context`. If no context is
             available, this argument is ignored.
     """
     @property
@@ -273,7 +273,7 @@ class Operator(abc.ABC):
         self._check_wires(wires)
         self._wires = wires  #: tuple[int]: wires on which the operator acts
 
-        if do_queue and (QNode._current_context is not None):
+        if do_queue and (qml._current_context is not None):
             self.queue()
 
     def __str__(self):
@@ -372,7 +372,7 @@ class Operator(abc.ABC):
     def queue(self):
         """Append the operator to a QNode queue."""
 
-        QNode._current_context._append_op(self)
+        qml._current_context._append_op(self)
         return self  # so pre-constructed Observable instances can be queued and returned in a single statement
 
 #=============================================================================
@@ -578,7 +578,7 @@ class Observable(Operator):
         do_queue (bool): Indicates whether the operation should be
             immediately pushed into a :class:`QNode` observable queue.
             The observable queue is determined by the presence of an
-            applicable `QNode._current_context`. If no context is
+            applicable `qml._current_context`. If no context is
             available, this argument is ignored.
     """
     # pylint: disable=abstract-method

@@ -36,13 +36,8 @@ from ._device import Device, DeviceError
 from .measure import expval, var, sample
 from .ops import *
 from .optimize import *
-from .qnode import QNode, QuantumFunctionError
+from .qnodes import qnode, QNode, QuantumFunctionError
 from ._version import __version__
-
-# NOTE: this has to be imported last,
-# otherwise it will clash with the .qnode import.
-from .decorator import qnode
-
 
 # overwrite module docstrings
 numpy.__doc__ = "NumPy with automatic differentiation support, provided by Autograd."
@@ -58,6 +53,7 @@ plugin_devices = {entry.name: entry for entry in iter_entry_points("pennylane.pl
 # get list of installed plugin converters
 plugin_converters = {entry.name: entry for entry in iter_entry_points("pennylane.io")}
 
+_current_context = None
 
 def device(name, *args, **kwargs):
     r"""device(name, wires=1, *args, **kwargs)

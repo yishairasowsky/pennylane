@@ -17,14 +17,16 @@ This module contains the functions for computing different types of measurement
 outcomes from quantum observables - expectation values, variances of expectations,
 and measurement samples.
 """
-from .qnode import QNode, QuantumFunctionError
+#from .qnode import QNode, QuantumFunctionError
+import pennylane as qml
 from .operation import Observable, Sample, Variance, Expectation, Tensor
+from .qnodes import QuantumFunctionError
 
 
 def _remove_if_in_queue(op):
     r"""Helper function to handle removing ops from the QNode queue"""
-    if op in QNode._current_context.queue:
-        QNode._current_context.queue.remove(op)
+    if op in qml._current_context.queue:
+        qml._current_context.queue.remove(op)
 
 
 def expval(op):
@@ -41,7 +43,7 @@ def expval(op):
             "{} is not an observable: cannot be used with expval".format(op.name)
         )
 
-    if QNode._current_context is not None:
+    if qml._current_context is not None:
         # delete observables from QNode operation queue if needed
         if isinstance(op, Tensor):
             for o in op.obs:
@@ -52,9 +54,9 @@ def expval(op):
     # set return type to be an expectation value
     op.return_type = Expectation
 
-    if QNode._current_context is not None:
+    if qml._current_context is not None:
         # add observable to QNode observable queue
-        QNode._current_context._append_op(op)
+        qml._current_context._append_op(op)
 
     return op
 
@@ -73,20 +75,20 @@ def var(op):
             "{} is not an observable: cannot be used with var".format(op.name)
         )
 
-    if QNode._current_context is not None:
+    if qml._current_context is not None:
         # delete operations from QNode queue
         if isinstance(op, Tensor):
             for o in op.obs:
-                QNode._current_context.queue.remove(o)
+                qml._current_context.queue.remove(o)
         else:
-            QNode._current_context.queue.remove(op)
+            qml._current_context.queue.remove(op)
 
     # set return type to be a variance
     op.return_type = Variance
 
-    if QNode._current_context is not None:
+    if qml._current_context is not None:
         # add observable to QNode observable queue
-        QNode._current_context._append_op(op)
+        qml._current_context._append_op(op)
 
     return op
 
@@ -106,19 +108,19 @@ def sample(op):
             "{} is not an observable: cannot be used with sample".format(op.name)
         )
 
-    if QNode._current_context is not None:
+    if qml._current_context is not None:
         # delete operations from QNode queue
         if isinstance(op, Tensor):
             for o in op.obs:
-                QNode._current_context.queue.remove(o)
+                qml._current_context.queue.remove(o)
         else:
-            QNode._current_context.queue.remove(op)
+            qml._current_context.queue.remove(op)
 
     # set return type to be a sample
     op.return_type = Sample
 
-    if QNode._current_context is not None:
+    if qml._current_context is not None:
         # add observable to QNode observable queue
-        QNode._current_context._append_op(op)
+        qml._current_context._append_op(op)
 
     return op
